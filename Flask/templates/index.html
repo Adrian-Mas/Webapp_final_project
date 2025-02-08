@@ -1,55 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Predicción de Incendios</title>
-  <!-- Incluye Bootstrap para estilos (opcional) -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción</title>
 </head>
 <body>
-  <div class="container mt-4">
-    <h1>Predicción de Incendios</h1>
-    <form method="post" action="{{ url_for('index') }}">
-      <div class="form-group">
-        <label for="direccionviento">Dirección del Viento</label>
-        <input type="text" class="form-control" name="direccionviento" id="direccionviento" required>
-      </div>
-      <div class="form-group">
-        <label for="velocidadviento">Velocidad del Viento</label>
-        <input type="text" class="form-control" name="velocidadviento" id="velocidadviento" required>
-      </div>
-      <div class="form-group">
-        <label for="humrelativa">Humedad Relativa</label>
-        <input type="text" class="form-control" name="humrelativa" id="humrelativa" required>
-      </div>
-      <div class="form-group">
-        <label for="tempmaxima">Temperatura Máxima</label>
-        <input type="text" class="form-control" name="tempmaxima" id="tempmaxima" required>
-      </div>
-      <div class="form-group">
-        <label for="diasultimalluvia">Días desde la Última Lluvia</label>
-        <input type="text" class="form-control" name="diasultimalluvia" id="diasultimalluvia" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Predecir</button>
+    <h1>Predicción del Modelo</h1>
+    <form method="POST">
+        <label for="direccionviento">Dirección del Viento:</label>
+        <input type="text" id="direccionviento" name="direccionviento" required><br><br>
+        
+        <label for="velocidadviento">Velocidad del Viento:</label>
+        <input type="text" id="velocidadviento" name="velocidadviento" required><br><br>
+        
+        <label for="humrelativa">Humedad Relativa:</label>
+        <input type="text" id="humrelativa" name="humrelativa" required><br><br>
+        
+        <label for="tempmaxima">Temperatura Máxima:</label>
+        <input type="text" id="tempmaxima" name="tempmaxima" required><br><br>
+        
+        <label for="diasultimalluvia">Días desde la Última Lluvia:</label>
+        <input type="text" id="diasultimalluvia" name="diasultimalluvia" required><br><br>
+        
+        <button type="submit">Predecir</button>
     </form>
-    
-    {% if result is not none %}
-      <h2 class="mt-4">Resultado de la predicción: {{ result }}</h2>
-      {% if result < threshold %}
-        <div class="alert alert-success" role="alert">
-          El resultado es bajo, lo que indica un riesgo <strong>bajo</strong>.
-        </div>
-      {% else %}
-        <div class="alert alert-danger" role="alert">
-          El resultado es alto, lo que indica un riesgo <strong>alto</strong>.
-        </div>
-      {% endif %}
+
+    {% if error %}
+        <p style="color: red;">Error: {{ error }}</p>
     {% endif %}
-  </div>
-  
-  <!-- Opcional: Incluir jQuery y Bootstrap JS para mejorar la interacción -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% if result is not none %}
+        <h2>Resultado de la Predicción:</h2>
+        <p>Valor Predicho: {{ result }}</p>
+        {% if result < threshold %}
+            <p>El valor predicho es menor que el umbral ({{ threshold }}).</p>
+        {% else %}
+            <p>El valor predicho es mayor o igual que el umbral ({{ threshold }}).</p>
+        {% endif %}
+    {% endif %}
 </body>
 </html>

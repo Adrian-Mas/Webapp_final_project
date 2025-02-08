@@ -17,6 +17,7 @@ THRESHOLD = 10
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
+    error = None
     if request.method == "POST":
         try:
             # Recoger datos del formulario y convertirlos a float
@@ -31,10 +32,11 @@ def index():
             prediction = model.predict(input_data)[0]
             result = prediction
         except Exception as e:
-            result = f"Error en los datos: {e}"
+            error = str(e)  # Guardar el mensaje de error
+            result = None  # Establecer result como None en caso de error
     
-    # Pasar el resultado y el umbral a la plantilla
-    return render_template("index.html", result=result, threshold=THRESHOLD)
+    # Pasar el resultado, el umbral y el error a la plantilla
+    return render_template("index.html", result=result, threshold=THRESHOLD, error=error)
 
 if __name__ == "__main__":
     app.run(debug=True)
